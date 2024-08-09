@@ -4,7 +4,8 @@ Tunify Platform is a web application designed to manage and stream music content
 
 ## Entity-Relationship Diagram (ERD)
 
-![Tunify Platform ERD](link-to-your-ERD-image)  <!-- Replace with the actual link to your ERD -->
+![Tunify Platform ERD](https://github.com/user-attachments/assets/9985457b-9b6a-46c9-9f1e-8c3de898d0e9)
+
 
 ## Database Models and Relationships
 
