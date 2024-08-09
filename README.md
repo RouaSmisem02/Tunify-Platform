@@ -1,0 +1,73 @@
+# Tunify Platform
+
+Tunify Platform is a web application designed to manage and stream music content. The platform allows users to create playlists, manage subscriptions, and explore various artists, albums, and songs. This project is built using ASP.NET Core with Entity Framework Core for database management.
+
+## Entity-Relationship Diagram (ERD)
+
+![Tunify Platform ERD](link-to-your-ERD-image)  <!-- Replace with the actual link to your ERD -->
+
+## Database Models and Relationships
+
+### Users
+- **UsersId**: Primary key
+- **UserName**: The user's name
+- **Email**: The user's email address
+- **JoinDate**: The date the user joined the platform
+- **SubscriptionId**: Foreign key linking to the Subscription table
+
+### Subscriptions
+- **SubscriptionId**: Primary key
+- **SubscriptionType**: Type of subscription (e.g., Free, Premium)
+- **Price**: Subscription cost
+
+### Playlists
+- **PlaylistsId**: Primary key
+- **PlaylistsName**: Name of the playlist
+- **CreatedDate**: Date the playlist was created
+- **UsersId**: Foreign key linking to the Users table
+
+### PlaylistSongs
+- **PlaylistSongsId**: Primary key
+- **SongsId**: Foreign key linking to the Songs table
+- **PlaylistsId**: Foreign key linking to the Playlists table
+
+### Songs
+- **SongsId**: Primary key
+- **Title**: Title of the song
+- **ArtistsId**: Foreign key linking to the Artists table
+- **AlbumsId**: Foreign key linking to the Albums table
+- **Duration**: Length of the song in seconds
+- **Genre**: Genre of the song
+
+### Artists
+- **ArtistsId**: Primary key
+- **Name**: Name of the artist
+- **Bio**: Biography of the artist
+
+### Albums
+- **AlbumsId**: Primary key
+- **Title**: Title of the album
+- **ReleasedOn**: Release date of the album
+- **ArtistsId**: Foreign key linking to the Artists table
+
+## Relationships Overview
+
+- **Users** can have multiple **Playlists**.
+- **Playlists** can contain multiple **Songs** through the **PlaylistSongs** junction table.
+- **Songs** belong to an **Artist** and an **Album**.
+- **Albums** are created by **Artists**.
+- **Users** subscribe to the platform through a **Subscription**.
+
+## Setup and Configuration
+
+1. Clone the repository from GitHub.
+2. Install the necessary NuGet packages:
+   - `Microsoft.EntityFrameworkCore.SqlServer`
+   - `Microsoft.EntityFrameworkCore.Tools`
+   - `Microsoft.VisualStudio.Web.CodeGeneration.Design`
+3. Configure the connection string in `appsettings.json`.
+4. Run migrations to set up the database:
+   ```bash
+   dotnet ef migrations add InitialCreate
+   dotnet ef database update
+![Tunify (1)](https://github.com/user-attachments/assets/9985457b-9b6a-46c9-9f1e-8c3de898d0e9)
