@@ -6,7 +6,7 @@ using Tunify_Platform.Data;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
-public class ArtistRepository : IArtistRepository
+public class ArtistRepository : IArtists
 {
     private readonly TunifyDbContext _context;
 

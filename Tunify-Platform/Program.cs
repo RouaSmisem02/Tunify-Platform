@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
-using Tunify_Platform.Repositories.Interfaces;
 using Tunify_Platform.Repositories;
+using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform
 {
@@ -18,14 +18,18 @@ namespace Tunify_Platform
             appBuilder.Services.AddDbContext<TunifyDbContext>(dbOptions => dbOptions.UseSqlServer(dbConnectionString));
 
             // Register the repository interfaces with their implementations
-            appBuilder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+            appBuilder.Services.AddScoped<IArtists, ArtistRepository>();
             appBuilder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             appBuilder.Services.AddScoped<ISongRepository, SongRepository>();
             appBuilder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = appBuilder.Build();
 
+            // Define endpoints
             app.MapGet("/", () => "Hello, Tunify!");
+
+            // Add more endpoints or routes if needed
+            // app.MapControllers(); // Uncomment if you are using controllers
 
             app.Run();
         }

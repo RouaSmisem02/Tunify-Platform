@@ -1,7 +1,9 @@
-﻿using Tunify_Platform.Data;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Tunify_Platform.Data;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 public class UserRepository : IUserRepository
 {
@@ -24,12 +26,18 @@ public class UserRepository : IUserRepository
 
     public async Task AddUserAsync(Users user)
     {
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateUserAsync(Users user)
     {
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
