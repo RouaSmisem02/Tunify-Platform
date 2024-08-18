@@ -6,7 +6,6 @@ Tunify Platform is a web application designed to manage and stream music content
 
 ![Tunify Platform ERD](https://github.com/user-attachments/assets/9985457b-9b6a-46c9-9f1e-8c3de898d0e9)
 
-
 ## Database Models and Relationships
 
 ### Users
@@ -61,13 +60,10 @@ Tunify Platform is a web application designed to manage and stream music content
 
 ## Setup and Configuration
 
-1. Clone the repository from GitHub.
-2. Install the necessary NuGet packages:
-   - `Microsoft.EntityFrameworkCore.SqlServer`
-   - `Microsoft.EntityFrameworkCore.Tools`
-   - `Microsoft.VisualStudio.Web.CodeGeneration.Design`
-3. Configure the connection string in `appsettings.json`.
-4. Run migrations to set up the database:
+1. **Clone the Repository**: Clone the repository from GitHub.
+
+2. **Install NuGet Packages**: Install the necessary NuGet packages using the following commands:
    ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
+   dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+   dotnet add package Microsoft.EntityFrameworkCore.Tools
+   dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
