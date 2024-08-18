@@ -19,15 +19,22 @@ namespace Tunify_Platform.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasData(
-                new Users { Id = 1, Name = "Raghad", EmailAddress = "raghad@gmail.com", DateJoined = "2024", SubscriptionId = 1 }
-            );
-            modelBuilder.Entity<Songs>().HasData(
-                new Songs { Id = 1, AlbumId = 1, ArtistId = 1, LengthInSeconds = 30, Name = "First Song", GenreId = 1 }
-            );
-            modelBuilder.Entity<Playlists>().HasData(
-                new Playlists { Id = 1, DateCreated = "2024", Name = "First Playlist", UserId = 1 }
-            );
+            // Define composite primary key for PlaylistSongs
+            modelBuilder.Entity<PlaylistSongs>()
+                .HasKey(ps => new { ps.PlaylistId, ps.SongId });
+
+            // Define relationships
+            modelBuilder.Entity<PlaylistSongs>()
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistSongs)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<PlaylistSongs>()
+                .HasOne(ps => ps.Song)
+                .WithMany(s => s.PlaylistSongs)
+                .HasForeignKey(ps => ps.SongId);
+
+            // Other configurations
         }
     }
 }

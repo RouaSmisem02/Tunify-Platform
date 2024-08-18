@@ -1,10 +1,14 @@
-﻿using Tunify_Platform.Models;
+﻿// File: IArtistRepository.cs
+using Tunify_Platform.Models;
 
-public interface IArtistRepository
+namespace Tunify_Platform.Repositories.Interfaces
 {
-    Task<IEnumerable<Artists>> GetAllArtistsAsync();
-    Task<Artists> GetArtistByIdAsync(int id);
-    Task AddArtistAsync(Artists artist);
-    Task UpdateArtistAsync(Artists artist);
-    Task DeleteArtistAsync(int id);
+    public interface IArtists
+    {
+        Task<IEnumerable<Artists>> GetAllArtistsAsync();
+        Task<Artists> GetArtistByIdAsync(int id);
+        Task AddArtistAsync(Artists artist);
+        Task UpdateArtistAsync(Artists artist);
+        Task DeleteArtistAsync(int id);
+    }
 }

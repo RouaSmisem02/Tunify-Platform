@@ -12,10 +12,12 @@ namespace Tunify_Platform.Controllers
     public class PlaylistsController : ControllerBase
     {
         private readonly IPlaylistRepository _playlistRepository;
+        private readonly ISongRepository _songRepository;
 
-        public PlaylistsController(IPlaylistRepository playlistRepository)
+        public PlaylistsController(IPlaylistRepository playlistRepository, ISongRepository songRepository)
         {
             _playlistRepository = playlistRepository;
+            _songRepository = songRepository;
         }
 
         // GET: api/Playlists
@@ -91,5 +93,36 @@ namespace Tunify_Platform.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("playlists/{playlistId}/songs/{songId}")]
+        public async Task<IActionResult> AddSongToPlaylist(int playlistId, int songId)
+        {
+            var playlist = await _playlistRepository.GetPlaylistByIdAsync(playlistId);
+            var song = await _songRepository.GetSongByIdAsync(songId);
+
+            if (playlist == null || song == null)
+            {
+                return NotFound();
+            }
+
+            var playlistSong = new PlaylistSongs
+            {
+                PlaylistId = playlistId,
+                SongId = songId,
+                Playlist = playlist,
+                Song = song
+            };
+
+            if (playlist.PlaylistSongs == null)
+            {
+                playlist.PlaylistSongs = new List<PlaylistSongs>();
+            }
+
+            playlist.PlaylistSongs.Add(playlistSong);
+            await _playlistRepository.UpdatePlaylistAsync(playlist);
+
+            return NoContent();
+        }
+
     }
 }

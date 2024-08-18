@@ -1,10 +1,15 @@
 ﻿using Tunify_Platform.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface IPlaylistRepository
+namespace Tunify_Platform.Repositories.Interfaces
 {
-    Task<IEnumerable<Playlists>> GetAllPlaylistsAsync();
-    Task<Playlists> GetPlaylistByIdAsync(int id);
-    Task AddPlaylistAsync(Playlists playlist);
-    Task UpdatePlaylistAsync(Playlists playlist);
-    Task DeletePlaylistAsync(int id);
+    public interface IPlaylistRepository
+    {
+        Task<IEnumerable<Playlists>> GetAllPlaylistsAsync();
+        Task<Playlists> GetPlaylistByIdAsync(int id);
+        Task AddPlaylistAsync(Playlists playlist);
+        Task UpdatePlaylistAsync(Playlists playlist);
+        Task DeletePlaylistAsync(int id);
+    }
 }
