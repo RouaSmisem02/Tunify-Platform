@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
 using Tunify_Platform.Repositories;
 using Tunify_Platform.Repositories.Interfaces;
+using Microsoft.OpenApi.Models;
 
 namespace Tunify_Platform
 {
@@ -9,21 +10,46 @@ namespace Tunify_Platform
     {
         public static void Main(string[] args)
         {
-            var appBuilder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
             // Retrieve the connection string configuration
-            string dbConnectionString = appBuilder.Configuration.GetConnectionString("DefaultConnection");
+            string dbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Register the DbContext with the dependency injection container
-            appBuilder.Services.AddDbContext<TunifyDbContext>(dbOptions => dbOptions.UseSqlServer(dbConnectionString));
+            builder.Services.AddDbContext<TunifyDbContext>(options =>
+                options.UseSqlServer(dbConnectionString));
 
             // Register the repository interfaces with their implementations
-            appBuilder.Services.AddScoped<IArtists, ArtistRepository>();
-            appBuilder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
-            appBuilder.Services.AddScoped<ISongRepository, SongRepository>();
-            appBuilder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IArtists, ArtistRepository>();
+            builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            builder.Services.AddScoped<ISongRepository, SongRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-            var app = appBuilder.Build();
+            // Add Swagger services to the container
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Tunify API",
+                    Version = "v1",
+                    Description = "API for managing playlists, songs, and artists in the Tunify Platform"
+                });
+            });
+
+            var app = builder.Build();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "api/{documentName}/swagger.json";
+            });
+
+            // Enable middleware to serve Swagger UI
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/api/v1/swagger.json", "Tunify API v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             // Define endpoints
             app.MapGet("/", () => "Hello, Tunify!");
