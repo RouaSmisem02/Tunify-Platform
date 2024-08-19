@@ -55,7 +55,7 @@ namespace Tunify_Platform
             app.MapGet("/", () => "Hello, Tunify!");
 
             // Add more endpoints or routes if needed
-            // app.MapControllers(); // Uncomment if you are using controllers
+            app.MapControllers(); // Uncomment if you are using controllers
 
             app.Run();
         }
