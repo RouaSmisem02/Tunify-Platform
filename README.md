@@ -67,3 +67,7 @@ Tunify Platform is a web application designed to manage and stream music content
    dotnet add package Microsoft.EntityFrameworkCore.SqlServer
    dotnet add package Microsoft.EntityFrameworkCore.Tools
    dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+### Usage
+Swagger API Documentation: The API is documented using Swagger. Once the application is running, you can access the Swagger UI at http://localhost:5000/swagger to explore and test the API endpoints.
+Additional Information
+For more detailed information about the project structure, features, and contributions, please refer to the full documentation in the repository.
