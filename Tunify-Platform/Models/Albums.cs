@@ -6,5 +6,7 @@
         public string Name { get; set; }
         public string ReleasedOn { get; set; }
         public int ArtistId { get; set; }
+        public string Title { get; set; }
+
     }
 }

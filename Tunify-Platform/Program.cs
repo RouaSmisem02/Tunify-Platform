@@ -3,6 +3,9 @@ using Tunify_Platform.Data;
 using Tunify_Platform.Repositories;
 using Tunify_Platform.Repositories.Interfaces;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Tunify_Platform.Repositories.Services;
 
 namespace Tunify_Platform
 {
@@ -19,11 +22,27 @@ namespace Tunify_Platform
             builder.Services.AddDbContext<TunifyDbContext>(options =>
                 options.UseSqlServer(dbConnectionString));
 
+            // Configure Identity services
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<TunifyDbContext>() // Ensure this method is available
+                .AddDefaultTokenProviders();
+
+            // Configure authentication and authorization
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                });
+
+            builder.Services.AddAuthorization();
+
             // Register the repository interfaces with their implementations
             builder.Services.AddScoped<IArtists, ArtistRepository>();
             builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             builder.Services.AddScoped<ISongRepository, SongRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IAccounts, IdentityAccountService>();
 
             // Add Swagger services to the container
             builder.Services.AddSwaggerGen(options =>
@@ -51,11 +70,18 @@ namespace Tunify_Platform
                 c.RoutePrefix = string.Empty;
             });
 
+            // Configure authentication and authorization middleware
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             // Define endpoints
             app.MapGet("/", () => "Hello, Tunify!");
 
             // Add more endpoints or routes if needed
-            app.MapControllers(); // Uncomment if you are using controllers
+            app.MapControllers(); // Enable controllers if using
+
+            // Add global exception handling
+            app.UseExceptionHandler("/Home/Error");
 
             app.Run();
         }

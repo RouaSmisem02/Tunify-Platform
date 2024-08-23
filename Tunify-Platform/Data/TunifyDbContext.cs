@@ -34,6 +34,24 @@ namespace Tunify_Platform.Data
                 .WithMany(s => s.PlaylistSongs)
                 .HasForeignKey(ps => ps.SongId);
 
+            // Additional configurations (if necessary)
+            modelBuilder.Entity<Albums>()
+                .HasIndex(a => a.Title)
+                .IsUnique();
+
+            modelBuilder.Entity<Artists>()
+                .HasIndex(a => a.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Songs>()
+                .HasIndex(s => s.Title);
+
+            // Seed data example (optional)
+            modelBuilder.Entity<Artists>().HasData(
+                new Artists { Id = 1, Name = "Artist1" },
+                new Artists { Id = 2, Name = "Artist2" }
+            );
+
             // Other configurations
         }
     }
