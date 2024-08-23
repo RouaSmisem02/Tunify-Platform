@@ -11,6 +11,7 @@ namespace Tunify_Platform.Models
         public int AlbumId { get; set; }
         public int LengthInSeconds { get; set; }
         public int GenreId { get; set; }
+        public string Title { get; set; } // Ensure this property exists
 
         public ICollection<PlaylistSongs> PlaylistSongs { get; set; } // Navigation property
     }
