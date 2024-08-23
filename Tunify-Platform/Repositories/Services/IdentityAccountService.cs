@@ -7,7 +7,7 @@ using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Repositories.Services
 {
-    public class IdentityAccountService : IAccounts
+    public class IdentityAccountService : IAccountsDone Lab15
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
