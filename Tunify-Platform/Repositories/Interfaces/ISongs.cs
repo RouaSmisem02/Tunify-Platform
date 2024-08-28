@@ -1,6 +1,6 @@
-﻿using Tunify_Platform.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Tunify_Platform.Models;
 
 namespace Tunify_Platform.Repositories.Interfaces
 {

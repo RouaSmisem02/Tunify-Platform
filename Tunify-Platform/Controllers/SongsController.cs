@@ -1,95 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tunify_Platform.Data;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
-namespace Tunify_Platform.Controllers
+namespace Tunify_Platform.Repositories
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SongsController : ControllerBase
+    public class SongRepository : ISongRepository
     {
-        private readonly ISongRepository _songRepository;
+        private readonly TunifyDbContext _context;
 
-        public SongsController(ISongRepository songRepository)
+        public SongRepository(TunifyDbContext context)
         {
-            _songRepository = songRepository;
+            _context = context;
         }
 
-        // GET: api/Songs
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Songs>>> GetSongs()
+        public async Task<IEnumerable<Songs>> GetAllSongsAsync()
         {
-            var songs = await _songRepository.GetAllSongsAsync();
-            return Ok(songs);
+            return await _context.Songs.ToListAsync();
         }
 
-        // GET: api/Songs/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Songs>> GetSong(int id)
+        public async Task<Songs> GetSongByIdAsync(int id)
         {
-            var song = await _songRepository.GetSongByIdAsync(id);
+            return await _context.Songs.FindAsync(id);
+        }
+
+        public async Task AddSongAsync(Songs song)
+        {
+            _context.Songs.Add(song);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateSongAsync(Songs song)
+        {
+            _context.Entry(song).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteSongAsync(int id)
+        {
+            var song = await _context.Songs.FindAsync(id);
             if (song == null)
             {
-                return NotFound();
+                throw new KeyNotFoundException($"Song with id {id} not found.");
             }
-            return Ok(song);
-        }
-
-        // PUT: api/Songs/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSong(int id, Songs song)
-        {
-            if (id != song.Id)
-            {
-                return BadRequest("Song ID mismatch.");
-            }
-
-            try
-            {
-                await _songRepository.UpdateSongAsync(song);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (await _songRepository.GetSongByIdAsync(id) == null)
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Songs
-        [HttpPost]
-        public async Task<ActionResult<Songs>> CreateSong(Songs song)
-        {
-            if (song == null)
-            {
-                return BadRequest("Song is null.");
-            }
-
-            await _songRepository.AddSongAsync(song);
-            return CreatedAtAction(nameof(GetSong), new { id = song.Id }, song);
-        }
-
-        // DELETE: api/Songs/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSong(int id)
-        {
-            try
-            {
-                await _songRepository.DeleteSongAsync(id);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            _context.Songs.Remove(song);
+            await _context.SaveChangesAsync();
         }
     }
 }

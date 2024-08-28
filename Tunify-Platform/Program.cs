@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
-using Tunify_Platform.Repositories;
+using Tunify_Platform.Repositories; // Ensure this namespace is correct
 using Tunify_Platform.Repositories.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Tunify_Platform.Repositories; // Updated namespace if needed
 using Tunify_Platform.Repositories.Services;
 
 namespace Tunify_Platform
@@ -24,7 +25,7 @@ namespace Tunify_Platform
 
             // Configure Identity services
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<TunifyDbContext>() // Ensure this method is available
+                .AddEntityFrameworkStores<TunifyDbContext>()
                 .AddDefaultTokenProviders();
 
             // Configure authentication and authorization
@@ -42,7 +43,7 @@ namespace Tunify_Platform
             builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             builder.Services.AddScoped<ISongRepository, SongRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IAccounts, IdentityAccountService>();
+            builder.Services.AddScoped<IAccounts, IdentityAccountService>(); // Ensure this is correct
 
             // Add Swagger services to the container
             builder.Services.AddSwaggerGen(options =>
@@ -57,7 +58,7 @@ namespace Tunify_Platform
 
             var app = builder.Build();
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = "api/{documentName}/swagger.json";
@@ -69,6 +70,9 @@ namespace Tunify_Platform
                 c.SwaggerEndpoint("/api/v1/swagger.json", "Tunify API v1");
                 c.RoutePrefix = string.Empty;
             });
+
+            // Configure static file serving (if needed)
+            app.UseStaticFiles();
 
             // Configure authentication and authorization middleware
             app.UseAuthentication();
@@ -83,6 +87,7 @@ namespace Tunify_Platform
             // Add global exception handling
             app.UseExceptionHandler("/Home/Error");
 
+            // Run the application
             app.Run();
         }
     }
