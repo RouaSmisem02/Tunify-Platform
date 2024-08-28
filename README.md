@@ -66,6 +66,33 @@ Tunify Platform is a web application designed to manage and stream music content
 - **Albums** are created by **Artists**.
 - **Users** subscribe to the platform through a **Subscription**.
 
+# Lab 15: Tunify Platform - JWT Authentication and Authorization
+
+## Overview
+
+In this lab, we'll integrate JWT-based authentication into the Tunify Platform. This setup will allow secure communication between clients and the server, ensuring that API endpoints are accessible only to authenticated users. Additionally, we'll manage roles and claims to provide granular access control.
+
+## Features
+
+- **JWT-Based Authentication**: Secure authentication using JSON Web Tokens.
+- **Role Management**: Assign roles to users and manage access based on these roles.
+- **Claims-Based Authorization**: Implement claims to control access to specific resources.
+
+## Setup Instructions
+
+### 1. Install Required Packages
+
+Ensure you have the following NuGet packages installed:
+
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- `System.IdentityModel.Tokens.Jwt`
+
+You can install them via the NuGet Package Manager or the .NET CLI:
+
+```bash
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package System.IdentityModel.Tokens.Jwt
+
 ## Setup and Configuration
 
 1. **Clone the Repository**: Clone the repository from GitHub.
